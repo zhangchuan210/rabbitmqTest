@@ -1,4 +1,4 @@
-package com.example.demo.config;
+package com.example.demo.fanout;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,6 +25,6 @@ public class FanoutRabbitMqTest {
 
     @Test
     public void hello() throws Exception {
-        fanoutProducer.send("fanout_email_queue");
+        fanoutProducer.send("fanoutExchange");
     }
 }

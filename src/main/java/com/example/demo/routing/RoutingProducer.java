@@ -1,7 +1,6 @@
-package com.example.demo.config;
+package com.example.demo.routing;
 
-import java.util.UUID;
-
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageBuilder;
@@ -9,14 +8,14 @@ import org.springframework.amqp.core.MessageProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.alibaba.fastjson.JSONObject;
+import java.util.UUID;
 
 @Component
-public class FanoutProducer {
+public class RoutingProducer {
     @Autowired
     private AmqpTemplate amqpTemplate;
 
-    public void send(String queueName) {
+    public void send(String exchange, String routingKey) {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("email", "xx@163.com");
         jsonObject.put("timestamp", 0);  // 时间戳为0，导致后续正常消费抛异常
@@ -26,6 +25,6 @@ public class FanoutProducer {
         Message message = MessageBuilder.withBody(jsonString.getBytes())
                 .setContentType(MessageProperties.CONTENT_TYPE_JSON).setContentEncoding("utf-8")
                 .setMessageId(UUID.randomUUID() + "").build(); //消息id设置在请求头里面 用UUID做全局ID
-        amqpTemplate.convertAndSend(queueName, message);
+        amqpTemplate.convertAndSend(exchange, routingKey, message);
     }
 }
