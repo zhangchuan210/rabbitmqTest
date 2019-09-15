@@ -15,7 +15,7 @@ public class HelloReceiver {
 
     @RabbitHandler
     public void process(String hello) {
-        System.out.println("Receiver  : " + hello);
+        System.out.println("=============Receiver  : " + hello);
     }
 
 }
